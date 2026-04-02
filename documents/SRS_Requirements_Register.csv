@@ -1,0 +1,43 @@
+REQ-ID,Phase,Module,Requirement Summary
+REQ-P1-BC-001,1,Browser Controller,Launch Chromium with isolated profile via Playwright
+REQ-P1-BC-002,1,Browser Controller,"Support 11 primitive operations: launch, goto, wait_for, click, type, scroll, screenshot, get_text, get_html, evaluate_js, close"
+REQ-P1-BC-003,1,Browser Controller,Auto retry logic: max 3 retries with exponential backoff
+REQ-P1-BC-004,1,Browser Controller,Domain allowlist enforcement; default: web.telegram.org only
+REQ-P1-BC-005,1,Browser Controller,"Python class interface only, no external HTTP API"
+REQ-P1-TG-001,1,Telegram Module,"Configuration: web_url, channel_name, profile_path, history_days, poll_interval"
+REQ-P1-TG-002,1,Telegram Module,One-time manual login; persist session in browser profile
+REQ-P1-TG-003,1,Telegram Module,Locate and open target channel by display name
+REQ-P1-TG-004,1,Telegram Module,Full history extraction by scrolling upward to cutoff date
+REQ-P1-TG-005,1,Telegram Module,Real-time monitoring loop with auto reconnect on crash
+REQ-P1-TG-006,1,Telegram Module,"Extract: message_id, sender, text, html, media, timestamp"
+REQ-P1-TG-007,1,Telegram Module,Screenshot fallback for DOM extraction failures
+REQ-P1-TG-008,1,Telegram Module,No forwarding/re-posting to any external Telegram account
+REQ-P1-ST-001,1,Storage,Local SQLite database at configured path
+REQ-P1-ST-002,1,Storage,messages_raw table as per schema in Section 10.1
+REQ-P1-ST-003,1,Storage,"De-duplication by (channel_name, message_id)"
+REQ-P1-ST-004,1,Storage,Structured JSON Lines log file for all events
+REQ-P2-LP-001,2,LLM Parser,Parsing Agent reads messages_raw where parsed=FALSE
+REQ-P2-LP-002,2,LLM Parser,LLM extraction to trade_signal JSON schema
+REQ-P2-LP-003,2,LLM Parser,"Validate: instrument whitelist, direction, SL/TP sanity checks"
+REQ-P2-LP-004,2,LLM Parser,Store all parse results in signals_parsed with status field
+REQ-P2-LP-005,2,LLM Parser,Notification on new valid signal (Telegram bot or email)
+REQ-P2-LP-006,2,LLM Parser,Auto-trigger on new messages_raw rows
+REQ-P3-TR-001,3,Trading Agent,Execute orders on CFD broker API for valid signals
+REQ-P3-TR-002,3,Trading Agent,"Risk checks: max per-trade %, max positions, session hours, daily loss limit"
+REQ-P3-TR-003,3,Trading Agent,Support market and limit/stop-entry order types
+REQ-P3-TR-004,3,Trading Agent,Log all orders and fills to trade_log table
+REQ-P3-TR-005,3,Trading Agent,DRY_RUN mode by default; live_trading flag required for live
+REQ-P3-TR-006,3,Trading Agent,Slippage reconciliation per trade
+REQ-NF-001,All,Non-Functional,Reliability: >=99% uptime; auto-restart within 60s on crash
+REQ-NF-002,All,Non-Functional,Performance: message to DB within poll_interval + 15 seconds
+REQ-NF-003,All,Non-Functional,Maintainability: DOM selectors in external selectors.yaml
+REQ-NF-004,All,Non-Functional,Portability: Windows 10+ and Ubuntu 22.04+ without code changes
+REQ-NF-005,All,Non-Functional,"Observability: structured JSON logs, configurable log level"
+REQ-NF-006,All,Non-Functional,Testability: mock browser and LLM; 70% unit test coverage
+REQ-SEC-001,All,Security,Browser profile dir accessible to OS user only (chmod 700)
+REQ-SEC-002,All,Security,API keys in env vars or .env only; never in source control
+REQ-SEC-003,All,Security,No network port exposed; all control is in-process Python
+REQ-SEC-004,All,Security,Domain allowlist in browser controller
+REQ-SEC-005,All,Security,Screenshots in local dir; no cloud sync or network share
+REQ-SEC-006,All,Security,No redistribution of messages to external services
+REQ-SEC-007,All,Security,Trading Agent and Extraction Agent run as separate processes

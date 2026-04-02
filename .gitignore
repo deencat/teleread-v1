@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# Local / secrets
+.env
+*.db
+
+# App runtime artifacts (do not publish sessions or scraped data)
+browser_profiles/
+data/
+logs/
+
+# Editor (optional local)
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db

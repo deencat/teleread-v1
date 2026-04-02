@@ -1,0 +1,55 @@
+# ============================================================
+# Telegram Signal Extractor — Main Configuration
+# Edit the values marked with <...> before first run.
+# ============================================================
+
+telegram:
+  web_url:                "https://web.telegram.org/k/"
+  # Must match Telegram Web's displayed title (traditional vs simplified matters)
+  target_channel_name:    "短炒世界升級系統-判市群(Donald sir)"
+  session_profile_path:   "./browser_profiles/telegram_session"
+  initial_history_days:   30
+  poll_interval_seconds:  30
+  allowed_senders:        []          # empty = all senders accepted
+
+browser:
+  headless:               false       # keep false for first login
+  allowed_domains:
+    - "web.telegram.org"
+  timeout_ms:             15000
+  max_retries:            3
+
+selectors_file:           "./config/selectors.yaml"
+
+storage:
+  db_type:                "sqlite"
+  db_path:                "./data/signals.db"
+  screenshots_dir:        "./data/screenshots"
+  log_file:               "./logs/system.jsonl"
+
+# ---- Phase 2 (disabled in MVP) ----
+parsing:
+  enabled:                false
+  llm_provider:           "openai"
+  llm_model:              "gpt-4o"
+  instrument_whitelist:   ["HK50","HSI","700.HK","9988.HK","2318.HK"]
+  prompt_template_file:   "./config/parse_prompt.txt"
+
+# ---- Phase 2 (disabled in MVP) ----
+notifications:
+  enabled:                false
+  method:                 "telegram_bot"
+  telegram_bot_token_env: "NOTIFY_BOT_TOKEN"
+  telegram_chat_id_env:   "NOTIFY_CHAT_ID"
+
+# ---- Phase 3 (disabled in MVP) ----
+trading:
+  enabled:                false
+  live_trading:           false
+  broker:                 "ig"
+  max_risk_per_trade_pct: 1.0
+  max_open_positions:     3
+  daily_loss_limit:       -500
+  session_hours_hkt:
+    start: "09:15"
+    end:   "16:00"

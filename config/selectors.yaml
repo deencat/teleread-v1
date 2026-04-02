@@ -1,0 +1,66 @@
+# ============================================================
+# Telegram Web K DOM Selectors
+# URL: https://web.telegram.org/k/
+# Last verified: 2026-03-27
+# ============================================================
+# MAINTENANCE NOTE: If Telegram Web updates its UI and selectors
+# break, update ONLY this file — no code changes needed.
+# To find updated selectors: open Telegram Web in Chrome,
+# right-click a message and Inspect Element, look for these
+# class names in the DOM.
+# ============================================================
+
+auth:
+  # QR code or phone number login screen indicator
+  login_page:          ".auth-wrap"
+  login_complete:      ".chatlist"                    # chat list visible = logged in
+
+chat_list:
+  # Scrollable container holding all chats
+  container:           ".chatlist"
+  scroll_wrapper:      ".sidebar-left .scrollable-y"
+  # Individual chat row item
+  chat_item:           ".chatlist-chat"
+  # The chat name text inside a chat row
+  chat_title:          ".chatlist-chat .peer-title"
+
+chat_window:
+  # Outer scroll container of messages
+  scroll_container:    ".bubbles .scrollable-y"
+  # Inner container holding all message groups
+  messages_container:  ".bubbles-inner"
+  # Each individual message bubble wrapper
+  message_bubble:      "[id^=\"message-\"]"
+  # Bubbles that contain actual content (not service/date)
+  content_bubble:      "[id^=\"message-\"]"
+  # The text body inside a message bubble
+  message_text:        ".message-content-wrapper"
+  # Forwarded message original sender title
+  forwarded_from:      ".forwarded-title .peer-title"
+  # Sender name (for group chats with multiple senders)
+  sender_name:         ".peer-title"
+  # Timestamp element
+  timestamp:           ".time, .message-date"
+  # Media/photo containers
+  media_container:     ".media-container"
+  photo_element:       ".attachment img"
+  # Document/file attachment
+  document_element:    ".document"
+  # Service messages (date separators etc.) — used to detect scroll boundaries
+  service_message:     ".service"
+  date_separator:      ".service .service-msg"
+
+# Attributes used to extract data from DOM elements
+attributes:
+  # The data attribute holding the Telegram message ID
+  message_id_attr:     "data-message-id"
+  # The data attribute holding peer/channel ID
+  peer_id_attr:        "data-peer-id"
+  # Timestamp in title attribute of time element (human readable)
+  timestamp_title:     "title"
+
+loading:
+  # Spinner shown while messages are loading during scroll
+  loading_spinner:     ".bubbles-loader"
+  # Progress bar at top of page during navigation
+  top_progress:        "#top-bar-progress"

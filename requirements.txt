@@ -6,5 +6,7 @@ aiosqlite==0.20.0
 asyncio==3.4.3
 loguru==0.7.2
 python-dateutil==2.9.0
+browser-use
+langchain-openai
 pytest
 pytest-asyncio

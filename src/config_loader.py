@@ -35,9 +35,19 @@ class StorageConfig:
 
 
 @dataclass(frozen=True)
+class BrowserUseConfig:
+    openrouter_api_key: str
+    openrouter_base_url: str
+    model_list: list[str]
+    default_model: Optional[str]
+    max_steps: int
+
+
+@dataclass(frozen=True)
 class AppConfig:
     telegram: TelegramConfig
     browser: BrowserConfig
+    browser_use: BrowserUseConfig
     selectors_file: str
     storage: StorageConfig
     raw: dict
@@ -100,9 +110,23 @@ def load_app_config(config_path: Path) -> AppConfig:
         log_file=_resolve_path(base_dir, str(storage.get("log_file", "./logs/system.jsonl"))),
     )
 
+    model_list_raw = os.getenv("BROWSER_USE_MODELS", "").strip()
+    model_list = [m.strip() for m in model_list_raw.split(",") if m.strip()]
+    default_model = os.getenv("BROWSER_USE_DEFAULT_MODEL", "").strip() or (model_list[0] if model_list else None)
+    max_steps = int(os.getenv("BROWSER_USE_MAX_STEPS", "30"))
+
+    browser_use_cfg = BrowserUseConfig(
+        openrouter_api_key=os.getenv("OPENROUTER_API_KEY", "").strip(),
+        openrouter_base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1").strip(),
+        model_list=model_list,
+        default_model=default_model,
+        max_steps=max_steps,
+    )
+
     return AppConfig(
         telegram=telegram_cfg,
         browser=browser_cfg,
+        browser_use=browser_use_cfg,
         selectors_file=_resolve_path(base_dir, str(selectors_file)),
         storage=storage_cfg,
         raw=raw,

@@ -41,6 +41,9 @@ class BrowserUseConfig:
     model_list: list[str]
     default_model: Optional[str]
     max_steps: int
+    use_vision: bool
+    cdp_url: Optional[str]
+    fallback_chat_index: int
 
 
 @dataclass(frozen=True)
@@ -114,6 +117,8 @@ def load_app_config(config_path: Path) -> AppConfig:
     model_list = [m.strip() for m in model_list_raw.split(",") if m.strip()]
     default_model = os.getenv("BROWSER_USE_DEFAULT_MODEL", "").strip() or (model_list[0] if model_list else None)
     max_steps = int(os.getenv("BROWSER_USE_MAX_STEPS", "30"))
+    use_vision_raw = os.getenv("BROWSER_USE_USE_VISION", "false").strip().lower()
+    use_vision = use_vision_raw in {"1", "true", "yes", "on"}
 
     browser_use_cfg = BrowserUseConfig(
         openrouter_api_key=os.getenv("OPENROUTER_API_KEY", "").strip(),
@@ -121,6 +126,9 @@ def load_app_config(config_path: Path) -> AppConfig:
         model_list=model_list,
         default_model=default_model,
         max_steps=max_steps,
+        use_vision=use_vision,
+        cdp_url=os.getenv("BROWSER_USE_CDP_URL", "").strip() or None,
+        fallback_chat_index=int(os.getenv("BROWSER_USE_FALLBACK_CHAT_INDEX", "2")),
     )
 
     return AppConfig(

@@ -113,6 +113,11 @@ async def run_extract_history_once_browser_use(*, model_override: str | None = N
         openrouter_base_url=cfg.browser_use.openrouter_base_url,
         model_name=selected_model,
         max_steps=cfg.browser_use.max_steps,
+        use_vision=cfg.browser_use.use_vision,
+        fallback_chat_index=cfg.browser_use.fallback_chat_index,
+        session_profile_path=cfg.telegram.session_profile_path,
+        headless=cfg.browser.headless,
+        cdp_url=cfg.browser_use.cdp_url,
         logger=logger,
     )
     logger.info(
